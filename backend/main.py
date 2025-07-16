@@ -29,14 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 
 # Response models
 class MomentumData(BaseModel):
@@ -127,23 +120,16 @@ async def fetch_price_data(ticker: str) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Error fetching price data for {ticker}: {str(e)}")
         
-    # Return mock data if API fails
-    return {
-        "returns": [-0.3, 0.4, 1.1, -0.2, 0.7],
-        "prices": [150.0, 149.5, 150.1, 151.8, 151.5]
-    }
-
+    
 def calculate_momentum_score(returns: List[float]) -> float:
     """Calculate simple momentum score from returns"""
     if not returns:
         return 0.0
     
-    # Simple momentum: average of returns with recent bias
-    weights = [0.1, 0.15, 0.2, 0.25, 0.3]  # More weight to recent days
+    weights = [0.1, 0.15, 0.2, 0.25, 0.3] 
     
     weighted_sum = sum(ret * weight for ret, weight in zip(returns, weights))
     
-    # Normalize to -1 to 1 range
     momentum_score = max(-1.0, min(1.0, weighted_sum / 10))
     
     return round(momentum_score, 2)
@@ -186,18 +172,7 @@ async def fetch_news_data(ticker: str) -> List[Dict[str, str]]:
         logger.error(f"Error fetching news for {ticker}: {str(e)}")
     
   
-    # return [
-    #     {
-    #         "title": f"{ticker} reports strong quarterly earnings",
-    #         "description": "Company exceeds analyst expectations with robust revenue growth...",
-    #         "url": "https://example.com/news1"
-    #     },
-    #     {
-    #         "title": f"{ticker} announces new product launch",
-    #         "description": "Innovation in AI technology drives market optimism...",
-    #         "url": "https://example.com/news2"
-    #     }
-    # ]
+
 
 async def get_llm_analysis(ticker: str, momentum_data: Dict, news_data: List[Dict]) -> Dict[str, str]:
     """Get LLM analysis using Gemini API"""
@@ -284,7 +259,6 @@ async def get_market_pulse(ticker: str):
         # Get LLM analysis
         llm_result = await get_llm_analysis(ticker, momentum_data, news_data)
         
-        # Build response
         response = MarketPulseResponse(
             ticker=ticker,
             as_of=datetime.now().strftime("%Y-%m-%d"),
@@ -302,7 +276,6 @@ async def get_market_pulse(ticker: str):
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
 

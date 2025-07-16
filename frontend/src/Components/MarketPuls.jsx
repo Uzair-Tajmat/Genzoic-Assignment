@@ -201,7 +201,7 @@ const MarketPulse = () => {
 
         {/* Footer */}
         <div className="text-center text-gray-500 text-sm mt-6">
-          Enter a stock ticker to get AI-powered market sentiment analysis
+          Enter a stock ticker to get Market sentiment analysis
         </div>
       </div>
     </div>
