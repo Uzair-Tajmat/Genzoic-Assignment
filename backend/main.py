@@ -9,11 +9,19 @@ import json
 import logging
 import os
 from functools import lru_cache
-import openai 
 import google.generativeai as genai
 from fastapi import FastAPI, HTTPException
 import json
 import re
+
+
+
+
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE", "K5SEK3JRJ9KXMAFC")
+NEWS_API_KEY = "28b6be8fca4c4bd380b727e9afcbbbe6"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyA5lqAnDM_pZ4fpq2_7hmwJnUB08C8vI3I")
+genai.configure(api_key=GEMINI_API_KEY)
+
 app = FastAPI(title="Market-Pulse", version="1")
 
 @app.get("/api/greet")
@@ -66,10 +74,6 @@ def set_cache(key, data):
     cache[key] = (data, datetime.now())
 
 # API Configuration
-ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE", "K5SEK3JRJ9KXMAFC")
-NEWS_API_KEY = "28b6be8fca4c4bd380b727e9afcbbbe6"
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyAeSGTf3m6ppH9RRSDcgQT8wjko3Rk43e8")
-genai.configure(api_key=GEMINI_API_KEY)
 
 
 async def fetch_price_data(ticker: str) -> Dict[str, Any]:
