@@ -1,5 +1,13 @@
 # GENZOIC ASSIGNMENT
 
+## IMPORTANT NOTE
+
+The gemini API key quota of my key have reached its limit . So you need to use your own GEMINI API key. You need to go in main.py
+
+```bash main.py
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_API_KEY")
+```
+
 ## Built with:
 
 - **React**
